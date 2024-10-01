@@ -1,3 +1,5 @@
+// A script used to control the ship's movement and rotation.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,38 +10,12 @@ public class ShipController : MonoBehaviour
     public float turnSpeed = 90.0f;
     public float horizontalInput;
     public float forwardInput;
-    public GameObject cannonballPrefab;
-    public GameObject cannonballAltPrefab;
-    public GameObject forwardCannonballPrefab;
-
-    private float fireCooldownTimer = 0.0f;
-    public float fireCooldown; // Cooldown duration in seconds
-
-    private PlayerCollisionDetection playerCollisionDetection;
-
-    public Image cooldownBar; // Reference to the UI Image for the cooldown bar
-
-    private float startingY; // Variable to store the initial Y position
-
+    private ShopLogic ShopLogic;
+    private float startingY; 
+    
     void Start()
     {
-        // Get reference to the PlayerCollisionDetection script
-        playerCollisionDetection = FindObjectOfType<PlayerCollisionDetection>();
-
-        // Assign the fireCooldown based on playerCollisionDetection
-        if (playerCollisionDetection != null)
-        {
-            fireCooldown = playerCollisionDetection.baseCooldown;
-        }
-
-        // Ensure the cooldown bar is initially invisible
-        if (cooldownBar != null)
-        {
-            cooldownBar.fillAmount = 0;
-            cooldownBar.gameObject.SetActive(false); // Hide the bar initially
-        }
-
-        // Store the starting Y position of the ship
+        ShopLogic = FindObjectOfType<ShopLogic>();
         startingY = transform.position.y;
     }
 
@@ -48,71 +24,21 @@ public class ShipController : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         forwardInput = Input.GetAxis("Vertical");
 
-        if (playerCollisionDetection != null)
+        if (ShopLogic != null) 
         {
-            float speed = playerCollisionDetection.baseSpeed;
-            // Ensure the Y-axis remains constant when moving the ship forward
-            transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput, Space.Self);
-            // Update the fireCooldown in case it changes due to upgrades
-            fireCooldown = playerCollisionDetection.baseCooldown;
+            float speed = ShopLogic.baseSpeed;
+            transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput, Space.Self); // Move the ship forward based on the vertical input
         }
 
-        // Apply rotation while keeping the ship on the same Y-axis
-        transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed * horizontalInput);
+        transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed * horizontalInput); // Rotate the ship based on the horizontal input
         float steeringFactor = Mathf.Clamp01(Mathf.Abs(forwardInput));
-        transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed * horizontalInput * steeringFactor);
-
-        // Update the cooldown timer
-        if (fireCooldownTimer > 0)
-        {
-            fireCooldownTimer -= Time.deltaTime;
-            UpdateCooldownBar();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && fireCooldownTimer <= 0)
-        {
-            FireCannons();
-            fireCooldownTimer = fireCooldown; // Reset the cooldown timer
-            cooldownBar.gameObject.SetActive(true); // Show the bar when firing
-            UpdateCooldownBar();
-        }
+        transform.Rotate(Vector3.up * Time.deltaTime * turnSpeed * horizontalInput * steeringFactor); 
 
         KeepShipWithinBounds();
-
-        // Ensure the Y-axis stays at the starting Y position
         MaintainStartingY();
     }
 
-    void FireCannons()
-    {
-        Vector3 leftSpawnPosition = transform.position + transform.TransformDirection(Vector3.right * 1.25f);
-        Instantiate(cannonballPrefab, leftSpawnPosition, transform.rotation);
-
-        Vector3 rightSpawnPosition = transform.position + transform.TransformDirection(Vector3.left * 1.25f);
-        Instantiate(cannonballAltPrefab, rightSpawnPosition, transform.rotation);
-
-        if (playerCollisionDetection != null && playerCollisionDetection.hasForwardShootingUpgrade)
-        {
-            Vector3 forwardSpawnPosition = transform.position + transform.TransformDirection(Vector3.forward * 2.0f);
-            Instantiate(forwardCannonballPrefab, forwardSpawnPosition, transform.rotation);
-        }
-    }
-
-    void UpdateCooldownBar()
-    {
-        if (cooldownBar != null)
-        {
-            float fillAmount = Mathf.Clamp01(fireCooldownTimer / fireCooldown);
-            cooldownBar.fillAmount = fillAmount;
-
-            if (fillAmount <= 0)
-            {
-                cooldownBar.gameObject.SetActive(false);
-            }
-        }
-    }
-
-    void KeepShipWithinBounds()
+    void KeepShipWithinBounds() // Keep the ship within the bounds of the game area
     {
         if (transform.position.x < -50)
         {
@@ -132,9 +58,8 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    void MaintainStartingY()
+    void MaintainStartingY()  // Maintain the starting Y position of the ship
     {
-        // Always keep the ship at the starting Y position
         transform.position = new Vector3(transform.position.x, startingY, transform.position.z);
     }
 }

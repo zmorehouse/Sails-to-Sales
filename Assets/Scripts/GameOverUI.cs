@@ -1,3 +1,5 @@
+// A script used to manage high scores and scores when game over condition is satisfied. 
+
 using UnityEngine;
 using TMPro;
 
@@ -11,13 +13,8 @@ public class GameOverUI : MonoBehaviour
         if (ScoreManager.Instance != null)
         {
             int score = ScoreManager.Instance.GetScore();
-            
-            // Update the high score if the current score is higher
             ScoreManager.Instance.CheckAndUpdateHighScore();
-            
-            // Get the updated high score
             int highScore = ScoreManager.Instance.GetHighScore();
-            
             scoreText.text = "You completed " + score + " deliveries!";
             highScoreText.text = "High Score: " + highScore;
         }

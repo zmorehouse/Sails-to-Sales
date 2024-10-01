@@ -1,9 +1,11 @@
+// A script used to manage the player's balance and purchases in the shop.
+
 using UnityEngine;
 
 public class ShopTrigger : MonoBehaviour
 {
     public GameObject shopMenuUI; // Reference to the shop menu UI
-    private PlayerCollisionDetection playerCollisionDetection;
+    private ShopLogic ShopLogic;
     private bool isPlayerInRange = false; // Flag to track if the player is within the trigger zone
 
     private void Start()
@@ -13,9 +15,7 @@ public class ShopTrigger : MonoBehaviour
         {
             shopMenuUI.SetActive(false);
         }
-
-        // Get the reference to the PlayerCollisionDetection script
-        playerCollisionDetection = FindObjectOfType<PlayerCollisionDetection>();
+        ShopLogic = FindObjectOfType<ShopLogic>();
     }
 
     private void Update()
@@ -24,17 +24,15 @@ public class ShopTrigger : MonoBehaviour
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
             OpenShopMenu();
-            playerCollisionDetection.UpdateBalanceText(); // Update the balance text when entering the shop
+            ShopLogic.UpdateBalanceText(); 
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the player has collided with the sphere
         if (other.CompareTag("Player"))
         {
-            isPlayerInRange = true; // Set the flag to true when the player enters the trigger zone
-            playerCollisionDetection.DisplayMessage("Press 'E' to open the shop."); // Display a message prompting the player to press 'E'
+            isPlayerInRange = true; 
         }
     }
 
@@ -44,7 +42,6 @@ public class ShopTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = false;
-            playerCollisionDetection.DisplayMessage(""); // Clear the message
         }
     }
 
@@ -53,8 +50,8 @@ public class ShopTrigger : MonoBehaviour
         if (shopMenuUI != null)
         {
             shopMenuUI.SetActive(true); // Show the shop menu UI
-            Time.timeScale = 0f; // Pause the game while in the shop menu
-            playerCollisionDetection.DisplayMessage("Welcome to the upgrade store!"); // Display the welcome message
+            Time.timeScale = 0f;  // Pause the game
+            ShopLogic.DisplayMessage("Welcome to the upgrade store!"); // Display the welcome message
         }
     }
 
@@ -62,35 +59,37 @@ public class ShopTrigger : MonoBehaviour
     {
         if (shopMenuUI != null)
         {
-            shopMenuUI.SetActive(false); // Hide the shop menu UI
+            shopMenuUI.SetActive(false); 
             Time.timeScale = 1f; // Resume the game
         }
 
         // Reset the message back to the welcome message
-        playerCollisionDetection.DisplayMessage("Welcome to the upgrade store!");
+        ShopLogic.DisplayMessage("Welcome to the upgrade store!");
     }
+
+    // Delegate the purchase methods to the ShopLogic script
 
     public void PurchaseExtraLife()
     {
-        playerCollisionDetection.PurchaseExtraLife(); // Delegate the purchase logic to PlayerCollisionDetection
+        ShopLogic.PurchaseExtraLife(); 
     }
 
     public void PurchaseShootingUpgrade()
     {
-        playerCollisionDetection.PurchaseShootingUpgrade(); // Delegate the purchase logic to PlayerCollisionDetection
+        ShopLogic.PurchaseShootingUpgrade(); 
     }
     public void PurchaseSpeedUpgrade1()
     {
-        playerCollisionDetection.PurchaseSpeedUpgrade1();
+        ShopLogic.PurchaseSpeedUpgrade1();
     }
 
     public void PurchaseSpeedUpgrade2()
     {
-        playerCollisionDetection.PurchaseSpeedUpgrade2();
+        ShopLogic.PurchaseSpeedUpgrade2();
     }
 
     public void PurchaseSpeedUpgrade3()
     {
-        playerCollisionDetection.PurchaseSpeedUpgrade3();
+        ShopLogic.PurchaseSpeedUpgrade3();
     }
 }

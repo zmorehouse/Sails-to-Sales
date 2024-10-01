@@ -1,3 +1,5 @@
+// A script used to manage the score and high score of the player.
+
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -38,10 +40,10 @@ public class ScoreManager : MonoBehaviour
 
     public void CheckAndUpdateHighScore()
     {
-        if (score > highScore)
+        if (score > highScore) // Check if the current score is higher than the high score and replace it if it is
         {
             highScore = score;
-            SaveHighScore(); // Save the new high score
+            SaveHighScore(); 
         }
     }
 
