@@ -59,27 +59,20 @@
     <UnityVersion>2022.3.41f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="C:\Users\Zac\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.0.4\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="D:\Programs\Unity\2022.3.41f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="D:\Programs\Unity\2022.3.41f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameOverUI.cs" />
-    <Compile Include="Assets\Scripts\Enemy.cs" />
-    <Compile Include="Assets\Scripts\PackagePool.cs" />
-    <Compile Include="Assets\Scripts\Package.cs" />
     <Compile Include="Assets\Scripts\PlayNowButton.cs" />
+    <Compile Include="Assets\Scripts\IslandTrigger.cs" />
+    <Compile Include="Assets\Scripts\QuotaManager.cs" />
     <Compile Include="Assets\Scripts\ShopTrigger.cs" />
-    <Compile Include="Assets\Scripts\DetectCollisions.cs" />
-    <Compile Include="Assets\Scripts\ShootingScript.cs" />
     <Compile Include="Assets\Scripts\PlayerIslandCollision.cs" />
-    <Compile Include="Assets\Scripts\ShootingScriptAlt.cs" />
     <Compile Include="Assets\Scripts\ScoreManager.cs" />
-    <Compile Include="Assets\Scripts\SpawnManager.cs" />
-    <Compile Include="Assets\Scripts\CannoballFWD.cs" />
+    <Compile Include="Assets\Scripts\ShopLogic.cs" />
     <Compile Include="Assets\Scripts\ShipController.cs" />
-    <Compile Include="Assets\Scripts\Timer.cs" />
-    <Compile Include="Assets\Scripts\DestoryProj.cs" />
-    <Compile Include="Assets\Scripts\PackageDelivery.cs" />
     <Compile Include="Assets\Scripts\FollowShip.cs" />
   </ItemGroup>
   <ItemGroup>

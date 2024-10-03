@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerIslandCollision : MonoBehaviour
 {
-    private ShopLogic ShopLogic;
+    public ShopLogic ShopLogic;
     private void Start()
     {
         ShopLogic = GetComponent<ShopLogic>();
