@@ -36,7 +36,7 @@ public class QuotaManager : MonoBehaviour
     {
         currentQuota = 0;
         Debug.Log("Quota has been reset for the new day cycle.");
-        UpdateQuotaUI(); /
+        UpdateQuotaUI(); 
     }
 
     // Method to update the quota text UI
