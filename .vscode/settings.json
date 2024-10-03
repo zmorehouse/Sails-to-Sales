@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Sails to Sales Prototype.sln"
+    "dotnet.defaultSolution": "Sails-to-Sales.sln"
 }

@@ -1,12 +1,14 @@
-// A script used to manage the player's balance and purchases in the shop.
-
+// A script used to manage the shop trigger and shop menu UI.
 using UnityEngine;
 
 public class ShopTrigger : MonoBehaviour
 {
-    public GameObject shopMenuUI; // Reference to the shop menu UI
+    public GameObject shopMenuUI; 
     private ShopLogic ShopLogic;
-    private bool isPlayerInRange = false; // Flag to track if the player is within the trigger zone
+    private ShipController shipController; 
+    private QuotaManager quotaManager;
+    private bool isPlayerInRange = false; 
+    private IslandTrigger[] islands; 
 
     private void Start()
     {
@@ -16,6 +18,19 @@ public class ShopTrigger : MonoBehaviour
             shopMenuUI.SetActive(false);
         }
         ShopLogic = FindObjectOfType<ShopLogic>();
+
+        // Find the player (ship) GameObject and get the ShipController component
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            shipController = player.GetComponent<ShipController>();
+        }
+
+        // Find all the islands in the scene that have the IslandTrigger component
+        islands = FindObjectsOfType<IslandTrigger>();
+
+        // Find the QuotaManager in the scene
+        quotaManager = FindObjectOfType<QuotaManager>();
     }
 
     private void Update()
@@ -23,8 +38,22 @@ public class ShopTrigger : MonoBehaviour
         // Check if the player is in range and presses the 'E' key
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            OpenShopMenu();
-            ShopLogic.UpdateBalanceText(); 
+            if (quotaManager != null && !quotaManager.HasMetQuota())
+            {
+                quotaManager.LoseGame(); // The player loses the game if the quota is not met
+            }
+            else
+            {
+                OpenShopMenu();
+                ShopLogic.UpdateBalanceText(); 
+                
+                if (shipController != null)
+                {
+                    shipController.ResetDayLimit(); 
+                    ResetIslands();
+                    quotaManager.ResetQuota(); 
+                }
+            }
         }
     }
 
@@ -38,7 +67,6 @@ public class ShopTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // Reset the flag when the player leaves the trigger zone
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = false;
@@ -63,33 +91,16 @@ public class ShopTrigger : MonoBehaviour
             Time.timeScale = 1f; // Resume the game
         }
 
-        // Reset the message back to the welcome message
         ShopLogic.DisplayMessage("Welcome to the upgrade store!");
     }
 
-    // Delegate the purchase methods to the ShopLogic script
-
-    public void PurchaseExtraLife()
+    // Reset all islands back to their original state
+    private void ResetIslands()
     {
-        ShopLogic.PurchaseExtraLife(); 
-    }
-
-    public void PurchaseShootingUpgrade()
-    {
-        ShopLogic.PurchaseShootingUpgrade(); 
-    }
-    public void PurchaseSpeedUpgrade1()
-    {
-        ShopLogic.PurchaseSpeedUpgrade1();
-    }
-
-    public void PurchaseSpeedUpgrade2()
-    {
-        ShopLogic.PurchaseSpeedUpgrade2();
-    }
-
-    public void PurchaseSpeedUpgrade3()
-    {
-        ShopLogic.PurchaseSpeedUpgrade3();
+        foreach (IslandTrigger island in islands)
+        {
+            island.ResetIsland(); // Reset each island
+        }
+        Debug.Log("All islands have been reset.");
     }
 }
