@@ -1400,9 +1400,7 @@ GameObject:
   - component: {fileID: 1532693093}
   - component: {fileID: 1532693092}
   - component: {fileID: 1532693091}
-  - component: {fileID: 1532693090}
   - component: {fileID: 1532693089}
-  - component: {fileID: 1532693088}
   m_Layer: 0
   m_Name: PlayerShip
   m_TagString: Player
@@ -1410,49 +1408,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1532693088
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1532693087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de517b937131655488f3d6027736f64f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnOffset: 7.5
-  maxLives: 15
-  currentLives: 0
-  money: 0
-  lifeText: {fileID: 0}
-  moneyText: {fileID: 0}
-  balanceText: {fileID: 0}
-  messageText: {fileID: 0}
-  speedUpgrade1Button: {fileID: 0}
-  speedUpgrade2Button: {fileID: 0}
-  speedUpgrade3Button: {fileID: 0}
-  piratePatienceUpgrade1Button: {fileID: 0}
-  piratePatienceUpgrade2Button: {fileID: 0}
-  piratePatienceUpgrade3Button: {fileID: 0}
-  cooldownUpgrade1Button: {fileID: 0}
-  cooldownUpgrade2Button: {fileID: 0}
-  cooldownUpgrade3Button: {fileID: 0}
-  forwardShootingUpgradeButton: {fileID: 0}
-  hullUpgradeButton: {fileID: 0}
-  speedUpgradeLevel: 0
-  baseSpeed: 10
-  speedIncrement: 5
-  piratePatienceLevel: 0
-  extraTimePerTier: 5
-  cooldownUpgradeLevel: 0
-  baseCooldown: 1.5
-  cooldownReductionPerTier: 20000
-  takesDamageFromTerrain: 1
-  redFlashImage: {fileID: 0}
-  flashDuration: 0.5
-  hasForwardShootingUpgrade: 0
 --- !u!114 &1532693089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1466,20 +1421,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShopLogic: {fileID: 0}
---- !u!114 &1532693090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1532693087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdc5625261c68f342b6ad2132d826100, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  score: 0
-  scoreText: {fileID: 0}
 --- !u!54 &1532693091
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1522,6 +1463,7 @@ MonoBehaviour:
   turnSpeed: 90
   horizontalInput: 0
   forwardInput: 0
+  canMove: 0
   dayLimit: 3
 --- !u!65 &1532693093
 BoxCollider:

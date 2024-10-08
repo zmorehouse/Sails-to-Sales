@@ -367,6 +367,7 @@
 "Assets/Scripts/ShopTrigger.cs"
 "Assets/Scripts/Tutorial/FollowShipTutorial.cs"
 "Assets/Scripts/Tutorial/TutorialIslandTrigger.cs"
+"Assets/Scripts/Tutorial/TutorialManager.cs"
 -langversion:9.0
 /deterministic
 /optimize+

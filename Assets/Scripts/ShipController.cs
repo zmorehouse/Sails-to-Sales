@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ShipController : MonoBehaviour
 {
     public float turnSpeed = 90.0f;
     public float horizontalInput;
     public float forwardInput;
+    public bool canMove = false; // New flag to control movement lock
     private ShopLogic ShopLogic;
     private float startingY;
     public int dayLimit = 3; // Initial day limit
@@ -20,6 +20,12 @@ public class ShipController : MonoBehaviour
 
     void Update()
     {
+        if (!canMove)
+        {
+            // Don't allow movement if canMove is false
+            return;
+        }
+
         horizontalInput = Input.GetAxis("Horizontal");
         forwardInput = Input.GetAxis("Vertical");
 
@@ -82,5 +88,11 @@ public class ShipController : MonoBehaviour
     public bool CanInteractWithIsland()
     {
         return dayLimit > 0;
+    }
+
+    // Enable or disable player movement
+    public void SetMovement(bool enable)
+    {
+        canMove = enable;
     }
 }
