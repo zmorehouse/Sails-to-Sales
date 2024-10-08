@@ -14,15 +14,13 @@ public class ShopLogic : MonoBehaviour
     public int maxLives = 15; 
     public int currentLives; 
 
-    // Score and Money Logic
-    private int score = 0; 
+    // Money Logic
     public int money = 0; 
 
     // TMP Elements
     public TextMeshProUGUI lifeText; 
     public TextMeshProUGUI moneyText; 
     public TextMeshProUGUI balanceText; 
-    public TextMeshProUGUI scoreText; 
     public TextMeshProUGUI messageText;
 
     // UI Elements
@@ -68,7 +66,7 @@ public class ShopLogic : MonoBehaviour
         UpdateSpeedUpgradeButtons();
         UpdatePiratePatienceUpgradeButtons();
         UpdateCooldownUpgradeButtons();
-        UpdateScoreText(); 
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -138,13 +136,7 @@ public class ShopLogic : MonoBehaviour
         }
     }
 
-    public void UpdateScoreText()
-    {
-        if (scoreText != null)
-        {
-            scoreText.text = $"Score : {score}";
-        }
-    }
+
 
     public bool hasForwardShootingUpgrade = false; 
 
@@ -519,8 +511,5 @@ public class ShopLogic : MonoBehaviour
         }
     }
 
-    public int GetScore()
-    {
-        return score; // Returns the current score (number of deliveries)
-    }
+
 }

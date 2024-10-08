@@ -1,5 +1,6 @@
-// A script used to manage interactions with islands in the game.
+// A script used to manage interactions with islands in the game. 
 using UnityEngine;
+using UnityEngine.SceneManagement; // Add this to use SceneManager
 
 public class IslandTrigger : MonoBehaviour
 {
@@ -34,30 +35,32 @@ public class IslandTrigger : MonoBehaviour
         quotaManager = FindObjectOfType<QuotaManager>();
     }
 
-    private void Update()
+private void Update()
+{
+    // Check if the player is in range and presses the 'E' key
+    if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
     {
-        // Check if the player is in range and presses the 'E' key
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
+        if (shipController != null && shipController.CanInteractWithIsland() && !isUsed)
         {
-            if (shipController != null && shipController.CanInteractWithIsland() && !isUsed)
-            {
-                // This is where we'd implement scene switching logic
+            Time.timeScale = 0;
 
-                shipController.DecreaseDayLimit(); 
-                MakeIslandGrey();
-                isUsed = true; 
-                quotaManager.IncrementQuota(); 
-            }
-            else if (isUsed)
-            {
-                Debug.Log("This island has already been used this cycle.");
-            }
-            else
-            {
-                Debug.Log("Player has no days left and cannot interact with islands.");
-            }
+            SceneManager.LoadScene("onislandgame", LoadSceneMode.Additive);
+
+            shipController.DecreaseDayLimit(); 
+            MakeIslandGrey();
+            isUsed = true; 
+            quotaManager.IncrementIslandVisit();
+        }
+        else if (isUsed)
+        {
+            Debug.Log("This island has already been used this cycle.");
+        }
+        else
+        {
+            Debug.Log("Player has no days left and cannot interact with islands.");
         }
     }
+}
 
     private void OnTriggerEnter(Collider other)
     {

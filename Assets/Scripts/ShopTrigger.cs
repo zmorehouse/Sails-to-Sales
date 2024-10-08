@@ -1,14 +1,13 @@
-// A script used to manage the shop trigger and shop menu UI.
 using UnityEngine;
 
 public class ShopTrigger : MonoBehaviour
 {
-    public GameObject shopMenuUI; 
+    public GameObject shopMenuUI;
     private ShopLogic ShopLogic;
-    private ShipController shipController; 
+    private ShipController shipController;
     private QuotaManager quotaManager;
-    private bool isPlayerInRange = false; 
-    private IslandTrigger[] islands; 
+    private bool isPlayerInRange = false;
+    private IslandTrigger[] islands;
 
     private void Start()
     {
@@ -38,30 +37,44 @@ public class ShopTrigger : MonoBehaviour
         // Check if the player is in range and presses the 'E' key
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            if (quotaManager != null && !quotaManager.HasMetQuota())
+            int playerResources = ResourceManager.instance.resources; // Get the player's current resources
+            int requiredQuota = quotaManager.currentResourceQuota; // Get the current resource quota
+
+            if (playerResources < requiredQuota)  // Loss condition
             {
-                quotaManager.LoseGame(); // The player loses the game if the quota is not met
+                quotaManager.LoseGame();  // Player loses if they have less than the required resources
             }
-            else
+            else  // Success condition
             {
+                IncrementScoreAndMultiplyQuota();  // Increase score and scale the resource quota
+                ResourceManager.instance.ResetResources();  // Reset player's resources
+
                 OpenShopMenu();
-                ShopLogic.UpdateBalanceText(); 
-                
+                ShopLogic.UpdateBalanceText();
+
                 if (shipController != null)
                 {
-                    shipController.ResetDayLimit(); 
+                    shipController.ResetDayLimit();
                     ResetIslands();
-                    quotaManager.ResetQuota(); 
+                    quotaManager.ResetIslandLimit();
                 }
             }
         }
+    }
+
+    // Method to handle success: increment score, multiply quota
+    private void IncrementScoreAndMultiplyQuota()
+    {
+        ScoreManager.Instance.IncrementScore();  // Increment the player's score
+        quotaManager.currentResourceQuota *= 2;  // Multiply the resource quota for the next cycle
+        Debug.Log($"Score incremented. New quota: {quotaManager.currentResourceQuota}");
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInRange = true; 
+            isPlayerInRange = true;
         }
     }
 
@@ -77,9 +90,9 @@ public class ShopTrigger : MonoBehaviour
     {
         if (shopMenuUI != null)
         {
-            shopMenuUI.SetActive(true); // Show the shop menu UI
+            shopMenuUI.SetActive(true);  // Show the shop menu UI
             Time.timeScale = 0f;  // Pause the game
-            ShopLogic.DisplayMessage("Welcome to the upgrade store!"); // Display the welcome message
+            ShopLogic.DisplayMessage("Welcome to the upgrade store!");  // Display the welcome message
         }
     }
 
@@ -87,8 +100,8 @@ public class ShopTrigger : MonoBehaviour
     {
         if (shopMenuUI != null)
         {
-            shopMenuUI.SetActive(false); 
-            Time.timeScale = 1f; // Resume the game
+            shopMenuUI.SetActive(false);
+            Time.timeScale = 1f;  // Resume the game
         }
 
         ShopLogic.DisplayMessage("Welcome to the upgrade store!");
@@ -99,7 +112,7 @@ public class ShopTrigger : MonoBehaviour
     {
         foreach (IslandTrigger island in islands)
         {
-            island.ResetIsland(); // Reset each island
+            island.ResetIsland();  // Reset each island
         }
         Debug.Log("All islands have been reset.");
     }

@@ -1,13 +1,14 @@
-// A script used to manage the score and high score of the player.
-
 using UnityEngine;
+using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
-    private int score;
+    public int score;
     private int highScore;
+    
+    public TextMeshProUGUI scoreText; // UI element to display the score
 
     private void Awake()
     {
@@ -23,14 +24,21 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        UpdateScoreText(); // Ensure the UI is updated at the start
+    }
+
     public void IncrementScore()
     {
         score++;
+        UpdateScoreText(); // Update UI after incrementing score
     }
 
     public void ResetScore()
     {
         score = 0;
+        UpdateScoreText(); // Update UI after resetting score
     }
 
     public int GetScore()
@@ -61,5 +69,13 @@ public class ScoreManager : MonoBehaviour
     private void LoadHighScore()
     {
         highScore = PlayerPrefs.GetInt("HighScore", 0); // Default to 0 if no high score is found
+    }
+
+    private void UpdateScoreText()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = $"Score: {score}";
+        }
     }
 }
