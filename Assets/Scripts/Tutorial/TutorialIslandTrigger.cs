@@ -21,7 +21,8 @@ private void Update()
     if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
     {
 
-     SceneManager.LoadScene("game", LoadSceneMode.Single);
+    //  SceneManager.LoadScene("game", LoadSceneMode.Single);
+    SceneManager.LoadScene("MinigameTutorial", LoadSceneMode.Single); //Go to minigame tutorial
 
     }
 }
